@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     }
     catch (const DOMXPathException& e)
     {
-        cout << "An error occurred: " << endl;
+        cout << "An error occurred: " << XMLString::transcode(e.getMessage()) << endl;
         return 1;
     }
 
@@ -67,7 +67,14 @@ int main(int argc, char* argv[])
     }
     else
     {
-        cout << TranscodeToStr(result->getNodeValue()->getFirstChild()->getNodeValue(), "ascii").str() << endl;
+        auto transcoded = TranscodeToStr(
+            result->getNodeValue()
+                ->getFirstChild()
+                ->getNodeValue(),
+            "ascii"
+        );
+
+        cout << transcoded.str() << endl;
     }
 
     XMLPlatformUtils::Terminate();
