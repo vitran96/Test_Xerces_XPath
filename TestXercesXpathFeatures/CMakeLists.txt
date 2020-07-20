@@ -18,7 +18,7 @@ target_link_libraries(${PROJECT_NAME} xerces-c)
 add_custom_command(
     TARGET ${PROJECT_NAME}
     PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} ARGS -E copy_directory
-    ${CMAKE_SOURCE_DIR}/resource
-    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resource
+    COMMAND ${CMAKE_COMMAND} ARGS -E copy
+    ${CMAKE_SOURCE_DIR}/resource/sample.xml
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/
 )

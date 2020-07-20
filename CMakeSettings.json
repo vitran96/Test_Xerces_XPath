@@ -30,6 +30,19 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": ""
+    },
+    {
+      "name": "win-x86-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [
+        "msvc_x86"
+      ],
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\build",
+      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\install",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": ""
     }
   ]
 }
