@@ -5,6 +5,15 @@
 #include <xercesc/dom/DOMElement.hpp>
 #include <xercesc/util/TransService.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
+
+#include <xercesc/framework/StdOutFormatTarget.hpp>
+#include <xercesc/dom/DOMErrorHandler.hpp>
+
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/dom/DOMLSSerializer.hpp>
+#include <xercesc/dom/impl/DOMImplementationImpl.hpp>
+#include <xercesc/util/XMLUni.hpp>
+
 using namespace xercesc;
 
 #include <iostream>
@@ -12,6 +21,42 @@ using namespace xercesc;
 using namespace std;
 
 #define TEST_FILE "sample.xml"
+
+class DOMPrintErrorHandler : public DOMErrorHandler
+{
+public:
+
+    DOMPrintErrorHandler() {};
+    ~DOMPrintErrorHandler() {};
+
+    /** @name The error handler interface */
+    bool handleError(const DOMError& domError) override;
+    void resetErrors() {};
+
+private:
+    /* Unimplemented constructors and operators */
+    //DOMPrintErrorHandler(const DOMErrorHandler &);
+    //void operator=(const DOMErrorHandler &);
+
+};
+
+bool DOMPrintErrorHandler::handleError(const DOMError& domError)
+{
+    // Display whatever error message passed from the serializer
+    if (domError.getSeverity() == DOMError::DOM_SEVERITY_WARNING)
+        XERCES_STD_QUALIFIER cerr << "\nWarning Message: ";
+    else if (domError.getSeverity() == DOMError::DOM_SEVERITY_ERROR)
+        XERCES_STD_QUALIFIER cerr << "\nError Message: ";
+    else
+        XERCES_STD_QUALIFIER cerr << "\nFatal Message: ";
+
+    char* msg = XMLString::transcode(domError.getMessage());
+    XERCES_STD_QUALIFIER cerr << msg << XERCES_STD_QUALIFIER endl;
+    XMLString::release(&msg);
+
+    // Instructs the serializer to continue serialization if possible.
+    return true;
+}
 
 // This program is only for testing XPath evaluation in Xerces
 // The code is not clean and has memory leak
@@ -68,13 +113,56 @@ int main(int argc, char* argv[])
 
     if (result->getNodeValue() == NULL)
     {
-        cout << "There is no result for the provided XPath " << endl;
+        cout << "There is no result for the provided XPath!" << endl;
     }
     else
     {
-        TranscodeToStr transcoded(result->getNodeValue()->getFirstChild()->getNodeValue(),"ascii");
+        cout << "Found " << result->getSnapshotLength() << endl;
+        //TranscodeToStr transcoded(result->getNodeValue()->getFirstChild()->getNodeValue(),"ascii");
+        //cout << transcoded.str() << endl;
 
-        cout << transcoded.str() << endl;
+        //// DOMImpl
+        DOMImplementation* domImpl =
+            DOMImplementationRegistry::getDOMImplementation(u"");
+
+        //// DOMLSOutput-----------------------------------------
+        DOMLSOutput* theOutPut = domImpl->createLSOutput();
+        theOutPut->setEncoding(XMLString::transcode("UTF-8"));
+        ////-----------------------------------------------------
+
+        //// DOMLSSerializer-------------------------------------
+        DOMLSSerializer* theSerializer = domImpl->createLSSerializer();
+        ////-----------------------------------------------------
+
+        //// Error Handler---------------------------------------
+        DOMErrorHandler* myErrorHandler = new DOMPrintErrorHandler();
+        ////-----------------------------------------------------
+
+        //// Configure-------------------------------------------
+        DOMConfiguration* serializerConfig = theSerializer->getDomConfig();
+        // Set Error Handler
+        serializerConfig->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler);
+        // Set Pretty Print
+        if (serializerConfig->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true))
+            serializerConfig->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
+        ////-----------------------------------------------------
+
+        //// Format Target---------------------------------------
+        XMLFormatTarget* myFormTarget = new StdOutFormatTarget();
+        ////-----------------------------------------------------
+
+        ////-----------------------------------------------------
+        theOutPut->setByteStream(myFormTarget);
+
+        XMLSize_t nLength = result->getSnapshotLength();
+        for (XMLSize_t i = 0; i < nLength; i++)
+        {
+            result->snapshotItem(i);
+            theSerializer->write(
+                result->getNodeValue(),
+                theOutPut
+            );
+        }
     }
 
     XMLPlatformUtils::Terminate();
