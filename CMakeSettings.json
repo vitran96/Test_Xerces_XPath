@@ -12,8 +12,8 @@
       "inheritEnvironments": [
         "msvc_x86"
       ],
-      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\build",
-      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\install",
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser-debug\\build",
+      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser-debug\\install",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": ""
@@ -25,8 +25,8 @@
       "inheritEnvironments": [
         "msvc_x86"
       ],
-      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\build",
-      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\install",
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser-relwithdeb\\build",
+      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser-relwithdeb\\install",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": ""
@@ -38,8 +38,8 @@
       "inheritEnvironments": [
         "msvc_x86"
       ],
-      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\build",
-      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser\\install",
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser-release\\build",
+      "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\testXMLParser-release\\install",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": ""

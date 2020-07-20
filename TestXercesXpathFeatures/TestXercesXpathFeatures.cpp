@@ -28,7 +28,10 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    const char* xpath = argv[1];
+    std::string xpath(argv[1]);
+
+    cout << "\n";
+    cout << "XPath: " << xpath << endl;
 
     XMLPlatformUtils::Initialize();
 
@@ -48,7 +51,7 @@ int main(int argc, char* argv[])
     try
     {
         result = doc->evaluate(
-            XMLString::transcode(xpath),
+            XMLString::transcode(xpath.c_str()),
             root,
             NULL,
             DOMXPathResult::ORDERED_NODE_SNAPSHOT_TYPE,
@@ -57,7 +60,9 @@ int main(int argc, char* argv[])
     }
     catch (const DOMXPathException& e)
     {
+        cout << "\n";
         cout << "An error occurred: " << XMLString::transcode(e.getMessage()) << endl;
+        XMLPlatformUtils::Terminate();
         return 1;
     }
 
@@ -67,12 +72,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        auto transcoded = TranscodeToStr(
-            result->getNodeValue()
-                ->getFirstChild()
-                ->getNodeValue(),
-            "ascii"
-        );
+        TranscodeToStr transcoded(result->getNodeValue()->getFirstChild()->getNodeValue(),"ascii");
 
         cout << transcoded.str() << endl;
     }
