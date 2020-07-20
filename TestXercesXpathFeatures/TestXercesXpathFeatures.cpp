@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
         << "If you want to use your XML file, rename and replace sample.xml.\n"
         << "This program only take 1 argument as XPath. Pass in more than 1 the program will only use the 1st one.\n";
 
-    if (argc == 0)
+    if (argc == 1)
     {
         cout << "Please pass in a XPath argument" << endl;
         return 1;
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
             NULL
         );
     }
-    catch (const DOMXPathException& e)
+    catch (DOMXPathException e)
     {
         cout << "\n";
         cout << "An error occurred: " << XMLString::transcode(e.getMessage()) << endl;
