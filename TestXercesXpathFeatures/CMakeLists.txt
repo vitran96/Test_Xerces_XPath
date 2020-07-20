@@ -20,5 +20,5 @@ add_custom_command(
     PRE_BUILD
     COMMAND ${CMAKE_COMMAND} ARGS -E copy_directory
     ${CMAKE_SOURCE_DIR}/resource
-    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resource
 )
