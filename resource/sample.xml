@@ -2,14 +2,18 @@
 
 <bookstore>
 
-<book>
-  <title lang="en">Harry Potter</title>
-  <price>29.99</price>
-</book>
+	<onePerson>
+		<name>Hello</name>
+	</onePerson>
 
-<book>
-  <title lang="en">Learning XML</title>
-  <price>39.95</price>
-</book>
+	<book id="1">
+	  <title lang="en">Harry Potter</title>
+	  <price>29.99</price>
+	</book>
+
+	<book>
+	  <title lang="en">Learning XML</title>
+	  <price>39.95</price>
+	</book>
 
 </bookstore>

@@ -118,8 +118,6 @@ int main(int argc, char* argv[])
     else
     {
         cout << "Found " << result->getSnapshotLength() << endl;
-        //TranscodeToStr transcoded(result->getNodeValue()->getFirstChild()->getNodeValue(),"ascii");
-        //cout << transcoded.str() << endl;
 
         //// DOMImpl
         DOMImplementation* domImpl =
